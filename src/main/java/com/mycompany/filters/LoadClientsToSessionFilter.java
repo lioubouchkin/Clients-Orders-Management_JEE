@@ -67,7 +67,7 @@ public class LoadClientsToSessionFilter implements Filter {
 	
 	// add an attribute to a session, if not exists
 	if ( session.getAttribute(ATT_ALL_CLIENTS) == null ) {
-//logger.info("session is empty");
+logger.info("session is empty");
 	    this.allClients = new HashMap<Long, ClientBean>();
 	    session.setAttribute(ATT_ALL_CLIENTS, allClients);
 
@@ -75,7 +75,7 @@ public class LoadClientsToSessionFilter implements Filter {
 	} else {
 	    this.allClients = (Map<Long, ClientBean>)(session.getAttribute(ATT_ALL_CLIENTS));
 	    this.allClients.clear();
-//logger.info("session is not empty, clients : "+this.allClients.size());
+logger.info("session is not empty, clients : "+this.allClients.size());
 	}
 	
 	// add an attribute to a session, if not exists

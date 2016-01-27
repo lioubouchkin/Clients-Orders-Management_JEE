@@ -11,7 +11,7 @@ import javax.faces.validator.ValidatorException;
 public class PhoneNumberValidator implements Validator {
 
     private static final String NUMBERS_ONLY = "Merci de saisir chiffres seulement.";
-    private static final String INVALID_LENGTH = "Le numéro de téléphone doit contenir au moins 10 chiffres.";
+    private static final String INVALID_LENGTH = "Le numéro de téléphone doit contenir 10 chiffres.";
     private static final String PHONE_PATTERN = "\\d{10,}";
     private static final String EMPTY_FIELD = "Merci de saisir un num\u00E9ro de t\u00E9l\u00E9phone.";
     
@@ -22,7 +22,7 @@ public class PhoneNumberValidator implements Validator {
 	if ( phone==null ) {
 	    throw new ValidatorException(
 		    new FacesMessage( FacesMessage.SEVERITY_WARN, EMPTY_FIELD, null ) );
-	} else if ( (phone.replaceAll("\\s", "").length()<10) ) {
+	} else if ( (phone.replaceAll("\\s", "").length() != 10) ) {
 	    throw new ValidatorException(
 		    new FacesMessage( FacesMessage.SEVERITY_WARN, INVALID_LENGTH, null ) );
 	} else if ( !phone.replaceAll("\\s", "").matches(PHONE_PATTERN) ) {

@@ -11,18 +11,15 @@
 	<h:inputText class="formInput" label="Nom" id="nomClient"
 		value="#{createClient.client.nom}"
 		size="20" maxlength="20" >
-<!-- 		 required="true" requiredMessage="#{messages['creationClient.lastname']}"  -->
 		<f:ajax event="blur" render="nomClientMessage" />
 	</h:inputText>
 	<h:message for="nomClient" errorClass="error" id="nomClientMessage" />
-	<!-- 		<span class="erreur"> <c:out value="#{clientForm.errors['nomClient']}"/></span>  -->
 	<br />
 
 	<h:outputLabel for="prenomClient" class="formLabel">Prénom </h:outputLabel>
 	<h:inputText class="formInput" id="prenomClient"
 		value="#{createClient.client.prenom}" size="20" maxlength="20" />
 	<h:message for="prenomClient" errorClass="error" />
-	<!-- 		<span class="erreur"> <c:out value="#{clientForm.errors['prenomClient']}" /> </span>  -->
 	<br />
 
 	<h:outputLabel for="adresseClient" class="formLabel">Adresse de
@@ -31,11 +28,9 @@
 	<h:inputText class="formInput" id="adresseClient"
 		value="#{createClient.client.adresseLivraison}"
 		size="20" maxlength="20" label="adresse">
-<!-- 		 required="true" requiredMessage="#{messages['creationClient.deliveryadress']}"  -->
 		<f:ajax event="blur" render="adresseLivraisonMessage" />
 	</h:inputText>
 	<h:message for="adresseClient" errorClass="error" id="adresseLivraisonMessage" />
-	<!-- 		<span class="erreur"> <c:out value="#{clientForm.errors['adresseClient']}" /> </span> -->
 	<br />
 
 	<h:outputLabel for="telephoneClient" class="formLabel">Numéro de
@@ -44,29 +39,26 @@
 	<h:inputText id="telephoneClient" class="formInput"
 		value="#{createClient.client.telephone}" label="phone"
 		size="20" maxlength="20" >
-<!-- 		required="true" requiredMessage="#{messages['creationClient.phone']}" -->
 		<f:ajax event="blur" render="telephoneClientMessage" />
 		<f:validator validatorId="com.mycompany.validators.PhoneNumberValidator" />
 	</h:inputText>
 	<h:message for="telephoneClient" errorClass="error" id="telephoneClientMessage" />
-	<!--  		<span class="erreur"> <c:out value="#{clientForm.errors['telephoneClient']}" /> </span> -->
 	<br />
 
 	<h:outputLabel for="emailClient" class="formLabel">Adresse email</h:outputLabel>
 	<h:inputText type="email" class="formInput" id="emailClient"
 		value="#{createClient.client.eMail}" size="20" maxlength="60" />
 	<h:message for="emailClient" errorClass="error" />
-	<!-- 		<span class="erreur"> <c:out value="#{clientForm.errors['emailClient']} "/> </span> -->
 	<br />
 
 	<h:outputLabel for="imageClient" class="formLabel">Image</h:outputLabel>
-	<h:inputFile id="imageClient" value="#{client.getImage()}" size="20"
-		maxlength="" />
-	<h:message for="imageClient" infoClass="succes" errorClass="error" />
+	<h:inputFile id="imageClient" value="#{createClient.uploadedPhoto}" size="20" >
+		<f:validator validatorId="com.mycompany.validators.UploadedImageValidator" />
+	</h:inputFile>
+	<h:message for="imageClient" errorClass="error" id="imageClientMessage"/>
 	<!-- 		<span class="erreur"><c:out value=" #{clientForm.errors['imageClient'] } " /></span><br /> -->
 	<!-- 		<span class="success"><c:out value=" #{imageClient} " /></span><br /> -->
 
-	<!-- 		<p class="info"> <c:out value="#{ clientForm.resultat }" escapeXml="false"/></p> -->
 </composite:implementation>
 
 </html>
