@@ -7,12 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
@@ -32,46 +34,56 @@ public class CreateClient {
     private ClientBean client;
     private ImageBean image;
     private Part uploadedPhoto;
-    private static final String FILE_LOCATION = "E:\\MyDocs\\Spring\\downloads\\temporary\\";
+    private Logger logger = LoggerFactory.getLogger(CreateClient.class);
+    private Map<Long, ClientBean> allClients;
+    
     private static final int TAILLE_TAMPON = 10240; // 10 ko
-    Logger logger = LoggerFactory.getLogger(CreateClient.class); 
+//    private static final String FILE_LOCATION = "E:\\MyDocs\\Spring\\downloads\\finished\\";
+    private static final String FILE_LOCATION = FacesContext.getCurrentInstance()
+            .getExternalContext().getInitParameter("uploadsPath");
+    private static final String ATT_ALL_CLIENTS = "clients";
     
     @EJB
     private ClientDAOBean clientDAO;
     @EJB
     private ImageDAOBean imageDAO;
 
+    
     public CreateClient() {
-	client = new ClientBean();
-	image = new ImageBean();
+	this.client = new ClientBean();
+	this.image = null;
     }
 
     public void create() {
+	// original file name with extension
 	String fileName;
 	/* Création ou récupération de la session */
-	// HttpSession session = (HttpSession)FacesContext.getCurrentInstance().
-	// getExternalContext().getSession(false);
-	// FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+		.getExternalContext().getSession(false);
+	allClients = (Map<Long, ClientBean>)session.getAttribute(ATT_ALL_CLIENTS);
+//logger.info("Clients : " + allClients.size());
 	
-	fileName = UploadedPartTools.getName(uploadedPhoto);
+	fileName = (uploadedPhoto!=null) ? UploadedPartTools.getName(uploadedPhoto) : null;
 	if (fileName != null && !fileName.isEmpty()) {
-	    // file name without the extension
+	    this.image = new ImageBean();
+	    // filename bean property ( file name without the extension )
 	    this.image.setNom(fileName.substring(0, fileName.indexOf(".")));
+	    this.client.setImage(this.image);
 	}
-	this.client.setImage(this.image);
 	// writing the fileImage onto the HardDrive if the file is selected
 	if (this.client.getImage() != null) {
 	    try {
 		// initilization of imageId and imagePath,
 		// writing the image to the HD;
-		this.saveFile();
-System.out.println(this.image.toString());
+		this.saveFile(fileName);
+logger.info("saved image : " + this.image.toString());
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}
 
-	clientDAO.create(client);
+	clientDAO.create(this.client);
+logger.info("created client : " + this.client.toString());
 	FacesMessage message = new FacesMessage(
 		"Succès de la création de client");
 	FacesContext.getCurrentInstance().addMessage(null, message);
@@ -80,19 +92,24 @@ System.out.println(this.image.toString());
     /*
      * Méthode utilitaire qui a pour but d'écrire le fichier passé en paramètre
      * sur le disque, dans le répertoire donné et avec le nom donné.
+     * @param fileName : file name with the extension
      */
-    private void saveFile() throws Exception {
+    private void saveFile( String fileName) throws Exception {
         /* Prépare les flux. */
         BufferedInputStream entree = null;
         BufferedOutputStream sortie = null;
         InputStream contenuFichier = null;
         byte[] tampon;
         int longueur;
-this.logger.info("enter saveFile method");        
+        String newFileName;
         try {
             String hashFileName = this.getFileHash();
-            /* Ouvre les flux. */
-            sortie = new BufferedOutputStream( new FileOutputStream( new File( FILE_LOCATION + hashFileName ) ),
+            newFileName = hashFileName + fileName.substring(fileName.indexOf("."));
+            /* Ouvre les flux. 
+             * file name : generated hash value plus original extension
+             * */
+            sortie = new BufferedOutputStream(
+        	    new FileOutputStream(new File(FILE_LOCATION + newFileName) ),
                     TAILLE_TAMPON );
             // Image File content was all read (extracted) for writing the hash value
             contenuFichier = this.uploadedPhoto.getInputStream();
@@ -106,8 +123,7 @@ this.logger.info("enter saveFile method");
             while ( ( longueur = entree.read( tampon ) ) > 0 ) {
                 sortie.write( tampon, 0, longueur );
             }
-            this.image.setPath( hashFileName );
-this.logger.info("hashFileName : " + hashFileName);
+            this.image.setPath(newFileName);
         } finally {
             try {
                 sortie.close();
@@ -120,7 +136,7 @@ this.logger.info("hashFileName : " + hashFileName);
         }
     }
     
-    // generates file hash value
+    // generates uploaded image hash value
     private String getFileHash() throws Exception {
 	/* Prépare les flux. */
 	BufferedInputStream entree = null;
@@ -159,10 +175,8 @@ this.logger.info("ENTER getFileHash()");
 	    this.image.setId(sb.toString());
 this.logger.info("id : " + sb.toString());
 
-	    // set file name to generated hash value, so the file name is a
-	    // unique one
-	    hashName = sb.toString()
-		    + this.image.getNom();
+	    // set file name to generated hash value, so the file name is a unique one
+	    hashName = sb.toString();
 	} finally {
 	    try {
 		entree.close();

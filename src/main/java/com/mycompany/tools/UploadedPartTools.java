@@ -17,6 +17,8 @@ public class UploadedPartTools {
      * présent. Si oui, alors le champ traité est de type File et la méthode
      * retourne son nom, sinon il s'agit d'un champ de formulaire classique et
      * la méthode retourne null.
+     * @return String : original file name with extension
+     * @return null : in case of error 
      */
     public static String getName( Part part ) {
 	String fileName = null;

@@ -38,7 +38,7 @@
 	</h:outputLabel>
 	<h:inputText id="telephoneClient" class="formInput"
 		value="#{createClient.client.telephone}" label="phone"
-		size="20" maxlength="20" >
+		size="20" maxlength="10" >
 		<f:ajax event="blur" render="telephoneClientMessage" />
 		<f:validator validatorId="com.mycompany.validators.PhoneNumberValidator" />
 	</h:inputText>

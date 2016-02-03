@@ -1,12 +1,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:composite="http://xmlns.jcp.org/jsf/composite">
+	xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
 	
 	<composite:interface />
 	
 	<composite:implementation>
-		<p><a href=""> Créer un nouveau client</a></p>
-		<p><a href=""> Créer une nouvelle commande</a></p>
-		<p><a href=">"> Voir les clients existants</a></p>
-		<p><a href=""> Voir les commandes existantes</a></p>
+		<p><h:link value="Créer un nouveau client" outcome="creerClient" /></p>
+		<p><a href=""> Créer une nouvelle commande </a></p>
+		<p><h:link value="Voir les clients existants" outcome="listerClients" /></p>
+		<p><a href=""> Voir les commandes existantes </a></p>
 	</composite:implementation>
 </html>

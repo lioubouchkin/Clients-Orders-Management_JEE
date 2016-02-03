@@ -19,6 +19,10 @@
 		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<context-param>
+	    <param-name>uploadsPath</param-name>
+	    <param-value>E:\\MyDocs\\Spring\\downloads\\finished\\</param-value>
+	  </context-param>
 
 	<!-- Déclaration du contrôleur central de JSF : la FacesServlet -->
 	<servlet>

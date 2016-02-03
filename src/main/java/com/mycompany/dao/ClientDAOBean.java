@@ -15,12 +15,16 @@ import javax.persistence.Query;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mycompany.entities.ClientBean;
 import com.mycompany.entities.CommandeBean;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
 public class ClientDAOBean {
+    private Logger logger = LoggerFactory.getLogger(ClientDAOBean.class);
     
     private static final String SQL_SELECT = 
 	    "SELECT c FROM ClientBean c ORDER BY c.nom";

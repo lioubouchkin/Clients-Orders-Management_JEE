@@ -33,14 +33,16 @@ public class UploadedImageValidator implements Validator {
 	    throws ValidatorException {
 	List <FacesMessage> msgs = new ArrayList<FacesMessage>();
 	Part file = (Part) value;
-	if (file.getSize() > 1048576) {
-	    msgs.add(new FacesMessage(SIZE_ERROR));
-	}
-	if ( !UploadedPartTools.formatAutorise(file, FILE_TYPE) ) {
-	    msgs.add(new FacesMessage(FILE_TYPE_ERROR));
-	}
-	if (!msgs.isEmpty()) {
-	    throw new ValidatorException(msgs);
+	if (file != null) {
+	    if (file.getSize() > 1048576) {
+		msgs.add(new FacesMessage(SIZE_ERROR));
+	    }
+	    if ( !UploadedPartTools.formatAutorise(file, FILE_TYPE) ) {
+		msgs.add(new FacesMessage(FILE_TYPE_ERROR));
+	    }
+	    if (!msgs.isEmpty()) {
+		throw new ValidatorException(msgs);
+	    }
 	}
     }
 

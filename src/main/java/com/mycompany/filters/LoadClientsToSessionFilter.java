@@ -1,10 +1,16 @@
 package com.mycompany.filters;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,7 +30,9 @@ import com.mycompany.dao.CommandeDAOBean;
 import com.mycompany.entities.ClientBean;
 import com.mycompany.entities.CommandeBean;
 
-@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns="/*")
+// session data is updated at the request to the following urlPatterns
+//@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/listerClients.xhtml"})
+@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/*"})
 public class LoadClientsToSessionFilter implements Filter {
 
     private Map<Long, ClientBean> allClients;
@@ -64,10 +72,11 @@ public class LoadClientsToSessionFilter implements Filter {
         
         /* Création ou récupération de la session */
 	HttpSession session = request.getSession();
+//        HttpSession session = (HttpSession)FacesContext.getCurrentInstance().
+//        	 getExternalContext().getSession(false);
 	
 	// add an attribute to a session, if not exists
 	if ( session.getAttribute(ATT_ALL_CLIENTS) == null ) {
-logger.info("session is empty");
 	    this.allClients = new HashMap<Long, ClientBean>();
 	    session.setAttribute(ATT_ALL_CLIENTS, allClients);
 
@@ -75,7 +84,6 @@ logger.info("session is empty");
 	} else {
 	    this.allClients = (Map<Long, ClientBean>)(session.getAttribute(ATT_ALL_CLIENTS));
 	    this.allClients.clear();
-logger.info("session is not empty, clients : "+this.allClients.size());
 	}
 	
 	// add an attribute to a session, if not exists
@@ -89,7 +97,6 @@ logger.info("session is not empty, clients : "+this.allClients.size());
 	    allOrders.clear();
 	}
         this.allClients = this.clientDAO.mapClients(allClients);
-//logger.info("Clients mapped : "+this.allClients.size());
         this.allOrders = this.commandeDAO.mapCommande(allOrders);
 
         chain.doFilter( request, response );

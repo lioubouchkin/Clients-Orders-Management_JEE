@@ -58,12 +58,13 @@ div.menu {
     padding: 10px;
 }
 
-table th {
+.table-header {
     color: #0568CD;
 	border: 1px solid #0568CD;
 	padding: 5px;;
 }
-table td {
+.table {
+	width: 100%;
 	border: 1px solid #ddd;
 	padding: 5px;
 }
@@ -73,11 +74,11 @@ table td {
 	color: red;
 }
 
-tr.d0 td {
+.table-odd-row {
   background-color: #F2F2F2;
   color: black;
 }
-tr.d1 td {
+.table-even-row {
   background-color: #BDBDBD;
   color: black;
 }
