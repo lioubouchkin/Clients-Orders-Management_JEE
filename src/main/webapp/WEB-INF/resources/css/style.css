@@ -82,3 +82,6 @@ div.menu {
   background-color: #BDBDBD;
   color: black;
 }
+td.center {
+	text-align: center;
+}

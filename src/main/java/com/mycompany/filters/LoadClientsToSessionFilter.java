@@ -31,8 +31,8 @@ import com.mycompany.entities.ClientBean;
 import com.mycompany.entities.CommandeBean;
 
 // session data is updated at the request to the following urlPatterns
-//@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/listerClients.xhtml"})
-@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/*"})
+@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/listerClients.xhtml"})
+//@WebFilter(filterName="LoadClientsToSessionFilter", urlPatterns={"/*"})
 public class LoadClientsToSessionFilter implements Filter {
 
     private Map<Long, ClientBean> allClients;
@@ -98,7 +98,7 @@ public class LoadClientsToSessionFilter implements Filter {
 	}
         this.allClients = this.clientDAO.mapClients(allClients);
         this.allOrders = this.commandeDAO.mapCommande(allOrders);
-
+logger.info("clients mapped : " + this.allClients.size());
         chain.doFilter( request, response );
     }
 

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.Map;
 
@@ -29,8 +30,9 @@ import com.mycompany.tools.UploadedPartTools;
 @ManagedBean
 @ViewScoped
 // @RequestScoped
-public class CreateClient {
+public class CreateClient implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private ClientBean client;
     private ImageBean image;
     private Part uploadedPhoto;
@@ -48,7 +50,6 @@ public class CreateClient {
     @EJB
     private ImageDAOBean imageDAO;
 
-    
     public CreateClient() {
 	this.client = new ClientBean();
 	this.image = null;
@@ -61,7 +62,6 @@ public class CreateClient {
 	HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
 		.getExternalContext().getSession(false);
 	allClients = (Map<Long, ClientBean>)session.getAttribute(ATT_ALL_CLIENTS);
-//logger.info("Clients : " + allClients.size());
 	
 	fileName = (uploadedPhoto!=null) ? UploadedPartTools.getName(uploadedPhoto) : null;
 	if (fileName != null && !fileName.isEmpty()) {
@@ -76,14 +76,12 @@ public class CreateClient {
 		// initilization of imageId and imagePath,
 		// writing the image to the HD;
 		this.saveFile(fileName);
-logger.info("saved image : " + this.image.toString());
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}
 
 	clientDAO.create(this.client);
-logger.info("created client : " + this.client.toString());
 	FacesMessage message = new FacesMessage(
 		"Succès de la création de client");
 	FacesContext.getCurrentInstance().addMessage(null, message);
@@ -144,7 +142,7 @@ logger.info("created client : " + this.client.toString());
 	byte[] tampon;
 	int longueur;
 	String hashName;
-this.logger.info("ENTER getFileHash()");
+//this.logger.info("ENTER getFileHash()");
 	// initialisation of an object to create a MD5 hash value for a piece of
 	// data
 	MessageDigest md = MessageDigest.getInstance("MD5");
@@ -173,7 +171,6 @@ this.logger.info("ENTER getFileHash()");
 			.substring(1));
 	    }
 	    this.image.setId(sb.toString());
-this.logger.info("id : " + sb.toString());
 
 	    // set file name to generated hash value, so the file name is a unique one
 	    hashName = sb.toString();
