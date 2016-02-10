@@ -18,6 +18,10 @@ legend {
     color: #0568CD;
 }
 
+.clientForm {
+	position: static;
+}
+
 .formLabel {
     float: left;
     width: 200px;
@@ -51,12 +55,12 @@ form input.sansLabel {
     color: #E8A22B;
 }
 
-div.menu {
-	border-style: solid;
+/* div.menu { */
+/* 	border-style: solid; */
 /*     border-width: 5px; */
-    border-color: #8080ff;
-    padding: 10px;
-}
+/*     border-color: #8080ff; */
+/*     padding: 10px; */
+/* } */
 
 .table-header {
     color: #0568CD;

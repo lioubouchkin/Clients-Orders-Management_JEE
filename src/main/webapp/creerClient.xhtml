@@ -2,32 +2,31 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:d="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:templates="http://xmlns.jcp.org/jsf/composite/templates">
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:components="http://xmlns.jcp.org/jsf/composite/components">
 	
 	<h:head>
 		<title>Créer client</title>
-		<h:outputStylesheet library="css" name="style.css" />	
+		<h:outputStylesheet library="css" name="style.css" />
 <!-- 		<f:loadBundle var="messages" basename="com.mycompany.bundles.messages"/> -->
 	</h:head>
 	
 	<h:body>
-		<div class="menu">
-			<templates:menu />
-		</div>
-
+		<components:menu />
 		<div>
-			<h:form enctype="multipart/form-data">
+			<h:form enctype="multipart/form-data" class="clientForm">
 				<fieldset>
 					<legend>Informations client</legend>
-					<templates:clientForm />
+					<components:clientForm />
 				</fieldset>
 				<h:messages globalOnly="true" infoClass="info" />
 				<p><h:commandButton value="Valider" action="#{createClient.create}" >
 					<f:ajax execute="@form" render="@form" />
 				</h:commandButton></p>
-				<h:button type="reset" value="Remettre à zéro" />
+				<p><h:button type="reset" value="Remettre à zéro" /></p>
 				<br />
-		</h:form>
+			</h:form>
 		</div>
 	</h:body>
 </html>

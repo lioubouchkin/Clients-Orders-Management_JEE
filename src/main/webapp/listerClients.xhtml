@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr"
+
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:templates="http://xmlns.jcp.org/jsf/composite/templates"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:components="http://xmlns.jcp.org/jsf/composite/components"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
     
     <h:head>
         <title>Liste des clients</title>
         <h:outputStylesheet library="css" name="style.css" />
+<!--         <h:outputStylesheet library="css" name="menu.css" /> -->
     </h:head>
     	
     <h:body>
-		<div class="menu">
-			<templates:menu />
-		</div>
+		<components:menu />
 		<div>
 			<c:choose>
 				<c:when test="#{empty clients}">
@@ -27,8 +28,7 @@
 				    			styleClass="table"
 				    			headerClass="table-header"
 				    			rowClasses="table-odd-row,table-even-row"
-				    			columnClasses="none, none, none, none, none, center, center"
-				    >
+				    			columnClasses="none, none, none, none, none, center, center">
 						<h:column>
 		    				<!-- column header -->
 		    				<f:facet name="header">Nom</f:facet>
@@ -69,7 +69,6 @@
 				</h:form>
 				</c:otherwise>
 			</c:choose>
-	</div>
-	
-</h:body>
+		</div>
+	</h:body>
 </html>
